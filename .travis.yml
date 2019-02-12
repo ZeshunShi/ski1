@@ -9,7 +9,8 @@ before_install:
 - docker info
 install:
 - npm install newman
-- pip install -r requirements.txt
+- "pip install -r requirements.txt"
+- pip install nose
 before_script:
 - node --version
 - npm --version
@@ -17,7 +18,7 @@ before_script:
 script:
 - nosetests
 - docker build -t dockerhub/swagger_server:1.0.0 .
-- docker run --name example_api -d -t -p 127.0.0.1:8080:8080 my/swagger_server:1.0.0
+- docker run --name example_api -d -t -p 127.0.0.1:8080:8080 dockerhub/swagger_server:1.0.0
 - docker ps
 - count=0 && until $(curl --output /dev/null --silent --head --fail http://localhost:8080);
   do printf '.' && sleep 3 && count=$((count+1)) && if [ $count -gt 5 ]; then break;
