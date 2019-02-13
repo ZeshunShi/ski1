@@ -18,16 +18,16 @@ before_script:
 - node_modules/.bin/newman --version
 script:
 - nosetests
-- docker build -t dockerhub/swagger_server:1.0.0 .
-- docker run --name example_api -d -t -p 127.0.0.1:8080:8080 dockerhub/swagger_server:1.0.0
+- docker build -t szeshun/dockerhub:swagger_server .
+- docker run --name example_api -d -t -p 127.0.0.1:8080:8080 szeshun/dockerhub:swagger_server
 - docker ps
 - count=0 && until $(curl --output /dev/null --silent --head --fail http://localhost:8080);
   do printf '.' && sleep 3 && count=$((count+1)) && if [ $count -gt 5 ]; then break;
   fi; done
 after_success:
 - docker login -u $DOCKER_USER -p $DOCKER_PASS
-- docker tag dockerhub/swagger_server:1.0.0 dockerhub/swagger_server:1.0.0
-- docker push dockerhub/swagger_server:1.0.0
+- docker tag szeshun/dockerhub:swagger_server szeshun/dockerhub:swagger_server
+- docker push szeshun/dockerhub:swagger_server
 env:
   global:
   - secure: N+VD0fDiAj42taJus/ycxvSeL80/Ytc+F2QILdrUGBDUuxLrpaa4zfFw3LR4h0zE1Z8SbOSPPcRDoMEOWNHpq/J2Zrh653+dbXJLqL+dU8YD5lJ1vjGiyI1mjYJNdct+/SjWk7zwPnWLzKwq2dWXdVb5Xie9qlAnPboy+VQcMLlLioDnJasa3Upg1frvdwe5gUmeD7nuUtC0xzwUKr4VJetINQP/pyWGfdag/+LQqfoJWz0CitTMQMdd8+7fgbIyohq0e9uXXbMlw4eRZJjIJHD4a2BNuIg2DhzfxN/TWqPfphKz3b9tX2JMpMDD0ClXLTpq8ldn86ndW19w7LkTz6B3Bjy6J24z/lNMYIOEQwNIOkJ3cJVAaKlJ7GHLEXSedx0mqmFk6VRuH9Ya9K8dGnOLO7GU9IKvwTK35fmjmM5L4SKjUtDvPvTMiOkgdFWKR5JObJj+3Z16MaSGvB1QTypezVczZV3rRoO66jLcaa/rVqr/03/sx9L1b/i/6hwnVqlmq86acgfeGlOjo2j5ADxNAmn1pFsdoBXlPyHss3ZyTZS6SxKou9O3b49R/h0vl1NTdlFIXQV3skhSrngazEV1n3su8r0HP9id2RFGvmmfrQW8FPSemdmGjBMb243z47g2J+H9VovgxlazvZ6r5S6B9NChZyH4MEtyFtOHjho=
